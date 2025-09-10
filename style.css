@@ -1,0 +1,234 @@
+/* ===== Reset ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; }
+:root{
+  --vh: 1vh;
+  /* Escalas fluidas */
+  --card-pad: clamp(20px, 3.2vw, 40px);
+  --emoji-size: clamp(56px, 9vw, 88px);
+  --title-size: clamp(18px, 2.4vw, 22px);
+  --label-size: clamp(12px, 1.6vw, 14px);
+  --input-size: clamp(15px, 2vw, 16px);
+  --button-size: clamp(15px, 2vw, 16px);
+  --gap-md: clamp(14px, 2.2vw, 22px);
+  --gap-lg: clamp(18px, 2.8vw, 28px);
+
+  /* Tokens dashboard */
+  --tile-title: clamp(12px, 1.7vw, 14px);
+  --tile-size: clamp(96px, 18vw, 140px);
+  --tile-radius: 18px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+
+/* ===== Lienzo a pantalla completa sin scroll ===== */
+body{
+  font-family: Arial, Helvetica, sans-serif;
+  color: #fff;
+  background: linear-gradient(135deg, #0d0d0e, #193b75);
+  overflow: hidden;
+  overscroll-behavior: contain;
+  touch-action: manipulation;
+  color-scheme: dark;
+}
+
+.app{
+  position: fixed;
+  inset: env(safe-area-inset-top) env(safe-area-inset-right)
+         env(safe-area-inset-bottom) env(safe-area-inset-left);
+  width: 100vw;
+  height: 100svh;                /* moderno */
+  height: calc(var(--vh) * 100); /* fallback */
+  display: grid;
+  place-items: center;
+}
+
+/* ===== LOGIN ===== */
+.login-wrapper{
+  width: clamp(280px, 92vw, 520px);
+  padding: clamp(8px, 2vw, 16px);
+}
+.login-container{
+  background: linear-gradient(145deg, #0f2c54, #0a1a33);
+  border-radius: 20px;
+  box-shadow: 0 15px 35px rgba(0,0,0,.5);
+  padding: var(--card-pad);
+  text-align: center;
+  will-change: transform;
+  transform-origin: center center;
+}
+.login-container.compact{
+  --card-pad: clamp(14px, 2vw, 22px);
+  --emoji-size: clamp(44px, 7vw, 60px);
+  --title-size: clamp(16px, 2vw, 18px);
+  --input-size: clamp(14px, 1.8vw, 15px);
+  --button-size: clamp(14px, 1.8vw, 15px);
+}
+.cara{
+  font-size: var(--emoji-size);
+  margin: var(--gap-md) 0 var(--gap-lg);
+  transition: transform .25s ease, font-size .25s ease;
+}
+.bienvenida{
+  font-size: var(--title-size);
+  font-weight: 600;
+  line-height: 1.3;
+}
+.form{ margin-top: 4px; }
+.input-group{ position: relative; margin: var(--gap-md) 0; }
+.input-group input{
+  width: 100%;
+  font-size: var(--input-size);
+  padding: 12px 0;
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid #7fa7ff33;
+  color: #fff;
+  outline: none;
+  caret-color: #00bfff;
+}
+.input-group label{
+  position: absolute; left: 0; top: 12px;
+  font-size: var(--label-size); color: #c9d6ff99;
+  pointer-events: none; transition: .2s ease;
+}
+.input-group input:focus + label,
+.input-group input:valid + label{
+  top: -10px; font-size: clamp(11px, 1.4vw, 12px); color: #ffffff;
+}
+button{
+  width: 100%; padding: 12px; background: #00bfff;
+  border: 0; border-radius: 10px; color: #fff; font-weight: 600;
+  font-size: var(--button-size); cursor: pointer;
+  transition: filter .2s ease, transform .02s ease;
+}
+button:active{ transform: scale(.995); }
+button:hover{ filter: brightness(.95); }
+
+@media (orientation: landscape) and (max-height: 520px){
+  .login-container{ padding: calc(var(--card-pad) * .8); }
+}
+::selection{ background: #00bfff55; }
+
+/* ===== PANTALLA POST-LOGIN (PROTOTIPO) ===== */
+.blank-screen{
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #0d0d0e, #193b75); /* azul pedido */
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+}
+
+/* Helpers */
+.hidden{ display: none !important; }
+
+/* ===== DASHBOARD ===== */
+.dashboard{
+  width: min(1200px, 96vw);
+  height: min(860px, 92vh);
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: clamp(12px, 2vw, 20px);
+  padding: clamp(10px, 2vw, 18px);
+}
+
+/* Header centrado */
+.dash-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+.dash-header h1{
+  font-size: clamp(18px, 2.6vw, 28px);
+  font-weight: 800;
+  letter-spacing: .3px;
+}
+.dash-sub{
+  opacity: .9;
+  font-size: clamp(12px, 1.6vw, 14px);
+}
+
+/* Grid de tiles (responsive por defecto) */
+.tiles{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: clamp(12px, 2vw, 18px);
+  align-content: start;
+}
+
+/* En pantallas grandes: 2 filas x 5 columnas y orden específico */
+@media (min-width: 1024px){
+  .tiles{
+    grid-template-columns: repeat(5, 1fr);
+  }
+  /* Fila 1: items 1..5 en columnas 1..5 */
+  .tiles .tile:nth-child(1){ grid-column: 1; grid-row: 1; }
+  .tiles .tile:nth-child(2){ grid-column: 2; grid-row: 1; }
+  .tiles .tile:nth-child(3){ grid-column: 3; grid-row: 1; }
+  .tiles .tile:nth-child(4){ grid-column: 4; grid-row: 1; }
+  .tiles .tile:nth-child(5){ grid-column: 5; grid-row: 1; } /* Marcaje */
+
+  /* Fila 2: colocación personalizada */
+  .tiles .tile:nth-child(7){ grid-column: 1; grid-row: 2; } /* Días Disponibles */
+  .tiles .tile:nth-child(8){ grid-column: 2; grid-row: 2; } /* Mis Documentos */
+  .tiles .tile:nth-child(9){ grid-column: 3; grid-row: 2; } /* Tickets RRHH */
+  .tiles .tile:nth-child(6){ grid-column: 4; grid-row: 2; } /* Cartas Laborales (junto a Beneficios) */
+  .tiles .tile:nth-child(10){ grid-column: 5; grid-row: 2; }/* Beneficios & Políticas */
+}
+
+/* Tile base */
+.tile{
+  text-decoration: none;
+  color: inherit;
+  display: grid;
+  grid-template-rows: auto var(--tile-size);
+  gap: 8px;
+  align-items: start;
+  will-change: transform, filter;
+}
+.tile-title{
+  font-size: var(--tile-title);
+  font-weight: 700;
+  text-shadow: 0 1px 0 rgba(0,0,0,.25);
+}
+
+/* Cuadro */
+.tile-box{
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--tile-radius);
+  border: 1px solid #ffffff2a;
+  background:
+    radial-gradient(80% 100% at 20% 10%, #ffffff22 0%, transparent 60%),
+    linear-gradient(145deg, #102a52, #0a1a33);
+  box-shadow: 0 10px 22px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.06);
+  transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+}
+.tile:hover .tile-box{
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.08);
+  filter: brightness(1.05);
+}
+.tile:active .tile-box{ transform: translateY(0); }
+
+/* "Imagen" con emoji */
+.tile-emoji{
+  font-size: clamp(42px, 7vw, 64px);
+  line-height: 1;
+  filter: drop-shadow(0 2px 2px rgba(0,0,0,.35));
+}
+
+/* Alturas muy bajas: compactar un poco */
+@media (max-height: 560px){
+  :root{ --tile-size: clamp(88px, 16vw, 120px); }
+}

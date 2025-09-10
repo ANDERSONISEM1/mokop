@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login RRHH - Carita Formal</title>
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"/>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app" id="app">
+    <!-- ===== LOGIN ===== -->
+    <div class="login-wrapper" id="loginWrapper">
+      <div class="login-container" id="loginCard">
+        <h2 class="bienvenida">Bienvenido al Portal Recursos Humanos</h2>
+        <div class="cara" id="cara-emoji">😀</div>
+
+        <form autocomplete="off" class="form" id="formLogin">
+          <!-- señuelos anti-autofill -->
+          <input type="text" style="display:none">
+          <input type="password" style="display:none">
+
+          <div class="input-group">
+            <input type="text" id="usuario" name="usuario" autocomplete="off" required inputmode="text">
+            <label for="usuario">Usuario</label>
+          </div>
+
+          <div class="input-group">
+            <input type="password" id="password" name="password" autocomplete="off" required>
+            <label for="password">Contraseña</label>
+          </div>
+
+          <button type="submit">Iniciar sesión</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ===== PANTALLA POST-LOGIN (PROTOTIPO) ===== -->
+    <div class="blank-screen hidden" id="blankScreen" aria-hidden="true">
+      <div class="dashboard">
+        <header class="dash-header">
+          <h1>Portal RRHH</h1>
+          <p class="dash-sub">Accesos rápidos</p>
+        </header>
+
+        <main class="tiles">
+          <!-- 1 VACACIONES -->
+          <a class="tile" href="#">
+            <div class="tile-title">Solicitud de Vacaciones</div>
+            <div class="tile-box"><span class="tile-emoji">🏖️</span></div>
+          </a>
+
+          <!-- 2 PERMISO -->
+          <a class="tile" href="#">
+            <div class="tile-title">Solicitud de Permiso</div>
+            <div class="tile-box"><span class="tile-emoji">📝</span></div>
+          </a>
+
+          <!-- 3 PRÉSTAMO -->
+          <a class="tile" href="#">
+            <div class="tile-title">Solicitud de Préstamo</div>
+            <div class="tile-box"><span class="tile-emoji">💳</span></div>
+          </a>
+
+          <!-- 4 EXPEDIENTE -->
+          <a class="tile" href="#">
+            <div class="tile-title">Verificar Expediente</div>
+            <div class="tile-box"><span class="tile-emoji">📁</span></div>
+          </a>
+
+          <!-- 5 MARCAJE -->
+          <a class="tile" href="#">
+            <div class="tile-title">Marcaje</div>
+            <div class="tile-box"><span class="tile-emoji">⏱️</span></div>
+          </a>
+
+          <!-- 6 CARTAS -->
+          <a class="tile" href="#">
+            <div class="tile-title">Cartas Laborales</div>
+            <div class="tile-box"><span class="tile-emoji">📄</span></div>
+          </a>
+
+          <!-- 7 DÍAS DISPONIBLES -->
+          <a class="tile" href="#">
+            <div class="tile-title">Días Disponibles</div>
+            <div class="tile-box"><span class="tile-emoji">📅</span></div>
+          </a>
+
+          <!-- 8 MIS DOCUMENTOS -->
+          <a class="tile" href="#">
+            <div class="tile-title">Mis Documentos</div>
+            <div class="tile-box"><span class="tile-emoji">🗂️</span></div>
+          </a>
+
+          <!-- 9 TICKETS RRHH -->
+          <a class="tile" href="#">
+            <div class="tile-title">Tickets RRHH</div>
+            <div class="tile-box"><span class="tile-emoji">🎫</span></div>
+          </a>
+
+          <!-- 10 BENEFICIOS -->
+          <a class="tile" href="#">
+            <div class="tile-title">Beneficios & Políticas</div>
+            <div class="tile-box"><span class="tile-emoji">🏥</span></div>
+          </a>
+        </main>
+      </div>
+    </div>
+    <!-- ===== /PANTALLA PROTOTIPO ===== -->
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
