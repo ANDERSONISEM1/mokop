@@ -2,9 +2,8 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Login RRHH - Carita Formal</title>
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"/>
+  <title>Portal RRHH</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"/>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -35,7 +34,7 @@
       </div>
     </div>
 
-    <!-- ===== PANTALLA POST-LOGIN (PROTOTIPO) ===== -->
+    <!-- ===== DASHBOARD ===== -->
     <div class="blank-screen hidden" id="blankScreen" aria-hidden="true">
       <div class="dashboard">
         <header class="dash-header">
@@ -43,70 +42,323 @@
           <p class="dash-sub">Accesos rápidos</p>
         </header>
 
-        <main class="tiles">
-          <!-- 1 VACACIONES -->
-          <a class="tile" href="#">
+        <main class="tiles" id="tiles">
+          <button class="tile" data-view="vacaciones" aria-label="Solicitud de Vacaciones">
             <div class="tile-title">Solicitud de Vacaciones</div>
             <div class="tile-box"><span class="tile-emoji">🏖️</span></div>
-          </a>
+          </button>
 
-          <!-- 2 PERMISO -->
-          <a class="tile" href="#">
+          <button class="tile" data-view="permiso" aria-label="Solicitud de Permiso">
             <div class="tile-title">Solicitud de Permiso</div>
             <div class="tile-box"><span class="tile-emoji">📝</span></div>
-          </a>
+          </button>
 
-          <!-- 3 PRÉSTAMO -->
-          <a class="tile" href="#">
+          <button class="tile" data-view="prestamo" aria-label="Solicitud de Préstamo">
             <div class="tile-title">Solicitud de Préstamo</div>
             <div class="tile-box"><span class="tile-emoji">💳</span></div>
-          </a>
+          </button>
 
-          <!-- 4 EXPEDIENTE -->
-          <a class="tile" href="#">
+          <button class="tile" data-view="expediente" aria-label="Verificar Expediente">
             <div class="tile-title">Verificar Expediente</div>
             <div class="tile-box"><span class="tile-emoji">📁</span></div>
-          </a>
+          </button>
 
-          <!-- 5 MARCAJE -->
-          <a class="tile" href="#">
+          <button class="tile" data-view="marcaje" aria-label="Marcaje">
             <div class="tile-title">Marcaje</div>
             <div class="tile-box"><span class="tile-emoji">⏱️</span></div>
-          </a>
+          </button>
 
-          <!-- 6 CARTAS -->
-          <a class="tile" href="#">
+          <button class="tile" data-view="cartas" aria-label="Cartas Laborales">
             <div class="tile-title">Cartas Laborales</div>
             <div class="tile-box"><span class="tile-emoji">📄</span></div>
-          </a>
+          </button>
 
-          <!-- 7 DÍAS DISPONIBLES -->
-          <a class="tile" href="#">
+          <button class="tile" data-view="dias" aria-label="Días Disponibles">
             <div class="tile-title">Días Disponibles</div>
             <div class="tile-box"><span class="tile-emoji">📅</span></div>
-          </a>
+          </button>
 
-          <!-- 8 MIS DOCUMENTOS -->
-          <a class="tile" href="#">
+          <button class="tile" data-view="documentos" aria-label="Mis Documentos">
             <div class="tile-title">Mis Documentos</div>
             <div class="tile-box"><span class="tile-emoji">🗂️</span></div>
-          </a>
+          </button>
 
-          <!-- 9 TICKETS RRHH -->
-          <a class="tile" href="#">
+          <button class="tile" data-view="tickets" aria-label="Tickets RRHH">
             <div class="tile-title">Tickets RRHH</div>
             <div class="tile-box"><span class="tile-emoji">🎫</span></div>
-          </a>
+          </button>
 
-          <!-- 10 BENEFICIOS -->
-          <a class="tile" href="#">
+          <button class="tile" data-view="beneficios" aria-label="Beneficios y Políticas">
             <div class="tile-title">Beneficios & Políticas</div>
             <div class="tile-box"><span class="tile-emoji">🏥</span></div>
-          </a>
+          </button>
         </main>
       </div>
     </div>
-    <!-- ===== /PANTALLA PROTOTIPO ===== -->
+
+    <!-- ===== VISTA A PANTALLA COMPLETA (MISMO FONDO AZUL) ===== -->
+    <section id="view" class="view hidden" aria-hidden="true" role="dialog" aria-modal="true">
+      <header class="view-header">
+        <button class="btn-back" id="btnBack" aria-label="Volver al dashboard">←</button>
+        <div class="view-titles">
+          <h2 id="viewTitle">Título</h2>
+          <p id="viewSubtitle" class="view-sub"></p>
+        </div>
+        <div class="view-actions">
+          <input id="viewSearch" type="search" placeholder="Buscar..." autocomplete="off" aria-label="Buscar en la vista">
+        </div>
+      </header>
+
+      <div class="view-content" id="viewContent" tabindex="0"></div>
+    </section>
+
+    <!-- ===== TEMPLATES DE CADA VISTA ===== -->
+    <!-- Vacaciones -->
+    <template id="tmpl-vacaciones">
+      <section class="section">
+        <div class="kpis">
+          <div class="kpi"><span class="kpi-num" data-bind="saldo">0</span><span class="kpi-label">Días disponibles</span></div>
+          <div class="kpi"><span class="kpi-num" data-bind="acumulado">0</span><span class="kpi-label">Acumulado anual</span></div>
+          <div class="kpi"><span class="kpi-num" data-bind="tomados">0</span><span class="kpi-label">Días tomados</span></div>
+        </div>
+
+        <form class="card form-grid" id="formVacaciones">
+          <h3 class="card-title">Nueva solicitud</h3>
+          <label>Fecha de inicio
+            <input type="date" name="inicio" required>
+          </label>
+          <label>Fecha de fin
+            <input type="date" name="fin" required>
+          </label>
+          <label>Motivo
+            <select name="motivo" required>
+              <option value="vacaciones">Vacaciones</option>
+              <option value="asuntos">Asuntos personales</option>
+            </select>
+          </label>
+          <label>Observaciones
+            <textarea name="obs" rows="2" placeholder="Comentario opcional"></textarea>
+          </label>
+          <button type="submit" class="btn-primary">Enviar solicitud</button>
+        </form>
+
+        <div class="card">
+          <h3 class="card-title">Historial</h3>
+          <div class="table-wrap">
+            <table class="table" data-table="historial">
+              <thead><tr><th>Inicio</th><th>Fin</th><th>Días</th><th>Estado</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </template>
+
+    <!-- Permiso -->
+    <template id="tmpl-permiso">
+      <section class="section">
+        <div class="kpis">
+          <div class="kpi"><span class="kpi-num" data-bind="pendientes">0</span><span class="kpi-label">Pendientes</span></div>
+          <div class="kpi"><span class="kpi-num" data-bind="aprobados">0</span><span class="kpi-label">Aprobados</span></div>
+          <div class="kpi"><span class="kpi-num" data-bind="rechazados">0</span><span class="kpi-label">Rechazados</span></div>
+        </div>
+        <form class="card form-grid" id="formPermiso">
+          <h3 class="card-title">Solicitar permiso</h3>
+          <label>Fecha
+            <input type="date" name="fecha" required>
+          </label>
+          <label>Tipo
+            <select name="tipo" required>
+              <option value="medico">Médico</option>
+              <option value="personal">Personal</option>
+              <option value="duelo">Duelo</option>
+            </select>
+          </label>
+          <label>Horas
+            <input type="number" name="horas" min="1" max="8" required>
+          </label>
+          <label>Descripción
+            <textarea name="desc" rows="2"></textarea>
+          </label>
+          <button type="submit" class="btn-primary">Enviar</button>
+        </form>
+
+        <div class="card">
+          <h3 class="card-title">Últimas solicitudes</h3>
+          <div class="table-wrap">
+            <table class="table" data-table="solicitudes">
+              <thead><tr><th>Fecha</th><th>Tipo</th><th>Horas</th><th>Estado</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </template>
+
+    <!-- Préstamo -->
+    <template id="tmpl-prestamo">
+      <section class="section">
+        <div class="kpis">
+          <div class="kpi"><span class="kpi-num" data-bind="saldo">Q 0</span><span class="kpi-label">Saldo actual</span></div>
+          <div class="kpi"><span class="kpi-num" data-bind="cuotas">0</span><span class="kpi-label">Cuotas restantes</span></div>
+          <div class="kpi"><span class="kpi-num" data-bind="tasa">0%</span><span class="kpi-label">Tasa</span></div>
+        </div>
+        <form class="card form-grid" id="formPrestamo">
+          <h3 class="card-title">Solicitar préstamo</h3>
+          <label>Monto (Q)
+            <input type="number" name="monto" min="100" step="50" required>
+          </label>
+          <label>Plazo (meses)
+            <input type="number" name="plazo" min="3" max="24" required>
+          </label>
+          <label>Motivo
+            <input type="text" name="motivo" required>
+          </label>
+          <button type="submit" class="btn-primary">Calcular & Enviar</button>
+        </form>
+        <div class="card">
+          <h3 class="card-title">Historial de préstamos</h3>
+          <div class="table-wrap">
+            <table class="table" data-table="prestamos">
+              <thead><tr><th>Folio</th><th>Monto</th><th>Plazo</th><th>Estado</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </template>
+
+    <!-- Expediente -->
+    <template id="tmpl-expediente">
+      <section class="section">
+        <div class="card">
+          <h3 class="card-title">Datos personales</h3>
+          <div class="grid-2">
+            <div><strong>Nombre:</strong> <span data-bind="nombre"></span></div>
+            <div><strong>Puesto:</strong> <span data-bind="puesto"></span></div>
+            <div><strong>Ingreso:</strong> <span data-bind="ingreso"></span></div>
+            <div><strong>Correo:</strong> <span data-bind="correo"></span></div>
+          </div>
+        </div>
+        <div class="card">
+          <h3 class="card-title">Documentos</h3>
+          <ul class="list" data-list="docs"></ul>
+        </div>
+      </section>
+    </template>
+
+    <!-- Marcaje -->
+    <template id="tmpl-marcaje">
+      <section class="section">
+        <div class="kpis">
+          <div class="kpi"><span class="kpi-num" data-bind="hoy">0</span><span class="kpi-label">Marcajes hoy</span></div>
+          <div class="kpi"><span class="kpi-num" data-bind="mes">0</span><span class="kpi-label">Asistencias mes</span></div>
+          <div class="kpi"><span class="kpi-num" data-bind="tardanzas">0</span><span class="kpi-label">Tardanzas</span></div>
+        </div>
+        <div class="card">
+          <h3 class="card-title">Últimos marcajes</h3>
+          <div class="table-wrap">
+            <table class="table" data-table="marcajes">
+              <thead><tr><th>Fecha</th><th>Entrada</th><th>Salida</th><th>Observación</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </template>
+
+    <!-- Cartas -->
+    <template id="tmpl-cartas">
+      <section class="section">
+        <form class="card form-grid" id="formCartas">
+          <h3 class="card-title">Generar carta</h3>
+          <label>Tipo
+            <select name="tipo" required>
+              <option value="laboral">Carta laboral</option>
+              <option value="ingresos">Carta de ingresos</option>
+              <option value="llamado">Llamado de atención</option>
+            </select>
+          </label>
+          <label>Para
+            <input type="text" name="para" placeholder="A quien corresponda / Nombre" required>
+          </label>
+          <label>Detalle
+            <textarea name="detalle" rows="2"></textarea>
+          </label>
+          <button type="submit" class="btn-primary">Generar PDF</button>
+        </form>
+
+        <div class="card">
+          <h3 class="card-title">Cartas recientes</h3>
+          <ul class="list" data-list="cartas"></ul>
+        </div>
+      </section>
+    </template>
+
+    <!-- Días disponibles -->
+    <template id="tmpl-dias">
+      <section class="section">
+        <div class="kpis">
+          <div class="kpi"><span class="kpi-num" data-bind="vacaciones">0</span><span class="kpi-label">Vacaciones</span></div>
+          <div class="kpi"><span class="kpi-num" data-bind="personales">0</span><span class="kpi-label">Personales</span></div>
+          <div class="kpi"><span class="kpi-num" data-bind="enfermedad">0</span><span class="kpi-label">Enfermedad</span></div>
+        </div>
+        <div class="card">
+          <h3 class="card-title">Detalle por año</h3>
+          <div class="table-wrap">
+            <table class="table" data-table="anual">
+              <thead><tr><th>Año</th><th>Asignados</th><th>Tomados</th><th>Saldo</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </template>
+
+    <!-- Documentos -->
+    <template id="tmpl-documentos">
+      <section class="section">
+        <div class="card">
+          <h3 class="card-title">Mis documentos</h3>
+          <ul class="files" data-list="files"></ul>
+        </div>
+      </section>
+    </template>
+
+    <!-- Tickets -->
+    <template id="tmpl-tickets">
+      <section class="section">
+        <div class="kpis">
+          <div class="kpi"><span class="kpi-num" data-bind="abiertos">0</span><span class="kpi-label">Abiertos</span></div>
+          <div class="kpi"><span class="kpi-num" data-bind="proceso">0</span><span class="kpi-label">En proceso</span></div>
+          <div class="kpi"><span class="kpi-num" data-bind="cerrados">0</span><span class="kpi-label">Cerrados</span></div>
+        </div>
+        <div class="card">
+          <h3 class="card-title">Listado</h3>
+          <div class="table-wrap">
+            <table class="table" data-table="tickets">
+              <thead><tr><th>ID</th><th>Asunto</th><th>Estado</th><th>Fecha</th></tr></thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </template>
+
+    <!-- Beneficios -->
+    <template id="tmpl-beneficios">
+      <section class="section">
+        <div class="card">
+          <h3 class="card-title">Beneficios activos</h3>
+          <ul class="benefits" data-list="benefits"></ul>
+        </div>
+        <div class="card">
+          <h3 class="card-title">Políticas</h3>
+          <ul class="list" data-list="policies"></ul>
+        </div>
+      </section>
+    </template>
+    <!-- ===== /TEMPLATES ===== -->
   </div>
 
   <script src="script.js"></script>
